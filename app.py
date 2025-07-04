@@ -31,11 +31,12 @@ def get_text_chunks(text):
     return texts
 
 def get_vector_store(text_chunks):
-    if not text_chunks:
-        raise ValueError("❌ No text chunks found — check your PDF content or extractor.")
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
-    vector_store.save_local("faiss_index")
+    try:
+        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
+        vector_store.save_local("faiss_index")
+    except Exception as e:
+        return f"Error creating vector store: {e}"
 
 def get_conversational_chain():
     prompt_template = """
@@ -104,8 +105,11 @@ def main():
                     st.session_state.pdf_uploaded = True
                     raw_text = get_pdf_text(pdf_docs)
                     text_chunks = get_text_chunks(raw_text)
-                    get_vector_store(text_chunks)
-                    st.success("✅ Done! Now ask your question.")
+                    status=get_vector_store(text_chunks)
+                    if isinstance(status, str):
+                        st.warning(status)
+                    else:
+                        st.success("✅ Done! Now ask your question.")
             else:
                 st.warning("⚠️ Please upload at least one PDF file.")
         
