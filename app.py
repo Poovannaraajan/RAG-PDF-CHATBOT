@@ -31,6 +31,8 @@ def get_text_chunks(text):
     return texts
 
 def get_vector_store(text_chunks):
+    if not text_chunks:
+        raise ValueError("❌ No text chunks found — check your PDF content or extractor.")
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
     vector_store.save_local("faiss_index")
