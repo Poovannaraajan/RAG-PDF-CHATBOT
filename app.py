@@ -8,6 +8,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains.question_answering import load_qa_chain
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+import shutil
 
 
 # Load environment variables
@@ -59,7 +60,7 @@ def get_conversational_chain():
     return chain
 
 def user_input(user_question):
-    if not os.path.exists("faiss_index/index.faiss"):
+    if not st.session_state.get("pdf_uploaded"):
         st.warning("⚠️ Please upload and process PDFs first.")
         return
 
@@ -77,7 +78,6 @@ def user_input(user_question):
 def main():
     st.set_page_config("Chat PDF")
     st.header("Chat with PDF")
-
     user_question = st.chat_input("Ask a Question from the PDF Files")
     if user_question:
         user_input(user_question)
@@ -93,15 +93,13 @@ def main():
             # AI bubble
             with st.chat_message("assistant"):
                 st.markdown(chat['answer'])
-                
-
-
     with st.sidebar:
         st.title("📁 Upload & Controls")
         pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button")
         if st.button("Submit & Process"):
             if pdf_docs:
                 with st.spinner("Processing..."):
+                    st.session_state.pdf_uploaded = True
                     raw_text = get_pdf_text(pdf_docs)
                     text_chunks = get_text_chunks(raw_text)
                     get_vector_store(text_chunks)
@@ -112,7 +110,10 @@ def main():
         if st.button("Clear Chat(Double Click)"):
             user_question = ""
             st.session_state.chat_history = []
-            st.success("🧹 Chat history cleared.")
+            st.session_state.pdf_uploaded = False
+            if os.path.exists("faiss_index"):
+                shutil.rmtree("faiss_index")
+            st.success("🧹 Chat history and PDF data got cleared. Pls re-upload PDF")
         output = "\n\n".join([
             f"You: {c['question']}\nAI: {c['answer']}" for c in st.session_state.chat_history
         ])
