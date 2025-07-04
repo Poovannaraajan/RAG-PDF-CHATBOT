@@ -80,7 +80,7 @@ def user_input(user_question):
 
 def main():
     st.set_page_config("Chat PDF")
-    st.header("Chat with PDF")
+    st.header("PDF RAG Chatbot💥")
     user_question = st.chat_input("Ask a Question from the PDF Files")
     if user_question:
         user_input(user_question)
