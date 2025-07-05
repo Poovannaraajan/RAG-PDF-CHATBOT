@@ -58,5 +58,20 @@ Build RAG-PDF-CHATBOT from the source and install dependencies:
 
 1. **Clone the repository:**
 
-```bash
-git clone https://github.com/Poovannaraajan/RAG-PDF-CHATBOT
+    ```bash
+    git clone https://github.com/Poovannaraajan/RAG-PDF-CHATBOT
+    ```
+
+2. **Navigate to the project directory:**
+
+    ```bash
+    cd RAG-PDF-CHATBOT
+    ```
+
+3. **Install the dependencies:**
+
+Using [pip](https://pip.pypa.io/en/stable/):
+
+    ```bash
+    pip install -r requirements.txt
+    ```
