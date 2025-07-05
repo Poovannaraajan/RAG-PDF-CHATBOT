@@ -70,8 +70,6 @@ Build RAG-PDF-CHATBOT from the source and install dependencies:
 
 3. **Install the dependencies:**
 
-Using [pip](https://pip.pypa.io/en/stable/):
-
     ```bash
     pip install -r requirements.txt
     ```
