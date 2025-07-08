@@ -12,6 +12,8 @@
 [![LangChain](https://img.shields.io/badge/-LangChain-black)](https://www.langchain.com/)
 [![Python](https://img.shields.io/badge/-Python-blue)](https://www.python.org/)
 
+*APP LINK: https://rag-pdf-chatbot-ibm.streamlit.app/*
+
 ---
 
 ## Table of Contents
